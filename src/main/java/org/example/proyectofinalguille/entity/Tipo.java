@@ -6,30 +6,20 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "entrenador")
-public class Entrenador {
+@Table(name = "tipo")
+public class Tipo {
+    @ManyToMany
+    @JoinTable(name = "tipos_pokemons",
+            joinColumns = @JoinColumn(name = "tipos_id"),
+            inverseJoinColumns = @JoinColumn(name = "pokemons_id"))
+    private Set<Pokemon> pokemons = new LinkedHashSet<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "nombre")
     private String nombre;
-
-    public Entrenador(){
-
-    }
-
-    public Entrenador(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    @OneToMany(mappedBy = "entrenador", orphanRemoval = true)
-    private Set<Pokemon> pokemons = new LinkedHashSet<>();
 
     public Set<Pokemon> getPokemons() {
         return pokemons;
@@ -37,6 +27,10 @@ public class Entrenador {
 
     public void setPokemons(Set<Pokemon> pokemons) {
         this.pokemons = pokemons;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void setNombre(String nombre) {

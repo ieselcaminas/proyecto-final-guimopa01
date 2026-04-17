@@ -8,15 +8,47 @@
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label prefHeight="58.0" prefWidth="170.0" text="Label">
+            <Label prefHeight="58.0" prefWidth="170.0" text="Nombre">
                <HBox.margin>
-                  <Insets />
+                  <Insets left="30.0" top="20.0" />
                </HBox.margin>
             </Label>
+            <TextField promptText="Ash Ketchup">
+               <HBox.margin>
+                  <Insets left="100.0" top="35.0" />
+               </HBox.margin>
+            </TextField>
          </children></HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ListView prefHeight="100.0" prefWidth="371.0" />
+            <Label prefHeight="71.0" prefWidth="141.0" text="Pokemon">
+               <HBox.margin>
+                  <Insets left="30.0" top="15.0" />
+               </HBox.margin>
+            </Label>
+            <ChoiceBox prefWidth="150.0">
+               <HBox.margin>
+                  <Insets left="130.0" top="30.0" />
+               </HBox.margin>
+            </ChoiceBox>
+         </children></HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" text="Añadir Entrenador">
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Añadir Pokemon">
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Eliminar Entrenador">
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
    </children>
