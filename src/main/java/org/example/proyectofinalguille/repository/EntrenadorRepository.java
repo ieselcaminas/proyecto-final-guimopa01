@@ -7,5 +7,4 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 
 public interface EntrenadorRepository extends CrudRepository<Entrenador, Long> {
-    List<Entrenador> findByPokemonId(Long pokemon_id);
 }

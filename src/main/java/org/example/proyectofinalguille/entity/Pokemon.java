@@ -13,6 +13,13 @@ public class Pokemon {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "entrenador_id")
+    private Entrenador entrenador;
+
+    @ManyToMany(mappedBy = "pokemons")
+    private Set<Tipo> tipo = new LinkedHashSet<>();
+
     private String nombre;
 
     public Pokemon() {
@@ -21,12 +28,15 @@ public class Pokemon {
         this.nombre = nombre;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "entrenador_id")
-    private Entrenador entrenador;
+    public void addTipo(Tipo tipo) {
+        this.tipo.add(tipo);
+        tipo.getPokemons().add(this);
+    }
 
-    @ManyToMany(mappedBy = "pokemons")
-    private Set<Tipo> tipo = new LinkedHashSet<>();
+    public void removeTipo(Tipo tipo) {
+        this.tipo.remove(tipo);
+        tipo.getPokemons().remove(this);
+    }
 
     public Set<Tipo> getTipo() {
         return tipo;

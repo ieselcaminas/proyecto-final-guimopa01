@@ -13,11 +13,13 @@ public class Entrenador {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @OneToMany(mappedBy = "entrenador", orphanRemoval = true)
+    private Set<Pokemon> pokemons = new LinkedHashSet<>();
+
     @Column(name = "nombre")
     private String nombre;
 
     public Entrenador(){
-
     }
 
     public Entrenador(String nombre) {
@@ -28,8 +30,15 @@ public class Entrenador {
         return nombre;
     }
 
-    @OneToMany(mappedBy = "entrenador", orphanRemoval = true)
-    private Set<Pokemon> pokemons = new LinkedHashSet<>();
+    public void addPokemon(Pokemon pokemon) {
+        this.pokemons.add(pokemon);
+        pokemon.setEntrenador(this);
+    }
+
+    public void removePokemon(Pokemon pokemon) {
+        this.pokemons.remove(pokemon);
+        pokemon.setEntrenador(null);
+    }
 
     public Set<Pokemon> getPokemons() {
         return pokemons;

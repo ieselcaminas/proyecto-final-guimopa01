@@ -4,15 +4,18 @@ import org.example.proyectofinalguille.entity.Entrenador;
 import org.example.proyectofinalguille.entity.Pokemon;
 import org.example.proyectofinalguille.repository.EntrenadorRepository;
 import org.example.proyectofinalguille.repository.PokemonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class EntrenadorService {
 
     private EntrenadorRepository entrenadorRepository;
     private PokemonRepository pokemonRepository;
 
+    @Autowired
     public EntrenadorService(EntrenadorRepository entrenadorRepository, PokemonRepository pokemonRepository) {
         this.entrenadorRepository = entrenadorRepository;
         this.pokemonRepository = pokemonRepository;
@@ -36,5 +39,13 @@ public class EntrenadorService {
 
     public Entrenador getEntrenador(Long id){
         return entrenadorRepository.findById(id).orElseThrow();
+    }
+
+    public Pokemon addPokemon(Long entrenador_id, Long pokemonId){
+        Entrenador entrenador = entrenadorRepository.findById(entrenador_id).orElseThrow();
+        Pokemon poke = pokemonRepository.findById(pokemonId).orElseThrow();
+        entrenador.addPokemon(poke);
+        entrenadorRepository.save(entrenador);
+        return pokemonRepository.save(poke);
     }
 }

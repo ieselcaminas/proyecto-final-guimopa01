@@ -4,13 +4,17 @@ import org.example.proyectofinalguille.entity.Pokemon;
 import org.example.proyectofinalguille.repository.EntrenadorRepository;
 import org.example.proyectofinalguille.repository.PokemonRepository;
 import org.example.proyectofinalguille.repository.TipoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PokemonService {
 
     private PokemonRepository pokemonRepository;
     private EntrenadorRepository entrenadorRepository;
     private TipoRepository tipoRepository;
 
+    @Autowired
     public PokemonService(PokemonRepository pokemonRepository, EntrenadorRepository entrenadorRepository, TipoRepository tipoRepository) {
         this.pokemonRepository = pokemonRepository;
         this.entrenadorRepository = entrenadorRepository;
@@ -29,3 +33,5 @@ public class PokemonService {
         return pokemonRepository.save(pokemon);
     }
 }
+
+

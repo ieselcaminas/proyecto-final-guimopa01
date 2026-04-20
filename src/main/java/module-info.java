@@ -5,7 +5,8 @@ module org.example.proyectofinalguille {
     requires spring.data.commons;
     requires jakarta.transaction;
     requires spring.beans;
-
+    requires spring.context;
+    requires jakarta.cdi;
 
     opens org.example.proyectofinalguille to javafx.fxml;
     exports org.example.proyectofinalguille;

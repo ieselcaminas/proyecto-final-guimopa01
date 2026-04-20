@@ -8,16 +8,26 @@ import java.util.Set;
 @Entity
 @Table(name = "tipo")
 public class Tipo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
     @ManyToMany
     @JoinTable(name = "tipos_pokemons",
             joinColumns = @JoinColumn(name = "tipos_id"),
             inverseJoinColumns = @JoinColumn(name = "pokemons_id"))
     private Set<Pokemon> pokemons = new LinkedHashSet<>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    public void addPokemon(Pokemon pokemon) {
+        this.pokemons.add(pokemon);
+        pokemon.getTipo().add(this);
+    }
+
+    public void removePokemon(Pokemon pokemon) {
+        this.pokemons.remove(pokemon);
+        pokemon.getTipo().remove(this);
+    }
 
     private String nombre;
 
