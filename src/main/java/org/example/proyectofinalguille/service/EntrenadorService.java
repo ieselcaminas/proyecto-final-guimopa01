@@ -1,5 +1,6 @@
 package org.example.proyectofinalguille.service;
 
+import jakarta.transaction.Transactional;
 import org.example.proyectofinalguille.entity.Entrenador;
 import org.example.proyectofinalguille.entity.Pokemon;
 import org.example.proyectofinalguille.repository.EntrenadorRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class EntrenadorService {
 

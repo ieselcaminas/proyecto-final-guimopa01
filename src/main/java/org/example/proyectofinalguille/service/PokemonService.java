@@ -1,5 +1,6 @@
 package org.example.proyectofinalguille.service;
 
+import jakarta.transaction.Transactional;
 import org.example.proyectofinalguille.entity.Pokemon;
 import org.example.proyectofinalguille.repository.EntrenadorRepository;
 import org.example.proyectofinalguille.repository.PokemonRepository;
@@ -7,6 +8,7 @@ import org.example.proyectofinalguille.repository.TipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class PokemonService {
 
