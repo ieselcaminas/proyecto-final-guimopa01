@@ -8,6 +8,8 @@ import org.example.proyectofinalguille.repository.TipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Transactional
 @Service
 public class PokemonService {
@@ -33,6 +35,11 @@ public class PokemonService {
 
     public Pokemon updatePokemon(Pokemon pokemon){
         return pokemonRepository.save(pokemon);
+    }
+
+    public List<Pokemon> findAll(){
+        return (List<Pokemon>) pokemonRepository.findAll();
+
     }
 }
 

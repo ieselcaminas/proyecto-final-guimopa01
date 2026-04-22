@@ -19,6 +19,13 @@ public class Tipo {
             inverseJoinColumns = @JoinColumn(name = "pokemons_id"))
     private Set<Pokemon> pokemons = new LinkedHashSet<>();
 
+    public Tipo(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Tipo() {
+    }
+
     public void addPokemon(Pokemon pokemon) {
         this.pokemons.add(pokemon);
         pokemon.getTipo().add(this);

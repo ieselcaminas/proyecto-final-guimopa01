@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="495.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectofinalguille.controller.HelloController">
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="495.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.proyectofinalguille.controller.PokemonController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -15,7 +15,7 @@
                     <HBox.margin>
                         <Insets left="50.0" />
                     </HBox.margin></Label>
-                <TextField prefHeight="25.0" prefWidth="190.0" promptText="Pikachu">
+                <TextField fx:id="nomPoke" prefHeight="25.0" prefWidth="190.0" promptText="Pikachu">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -30,7 +30,7 @@
                     <HBox.margin>
                         <Insets left="50.0" />
                     </HBox.margin></Label>
-                <ChoiceBox prefWidth="150.0">
+                <ChoiceBox fx:id="Tipo1" prefWidth="150.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -45,27 +45,28 @@
                     <HBox.margin>
                         <Insets left="50.0" />
                     </HBox.margin></Label>
-                <ChoiceBox prefWidth="150.0">
+                <ChoiceBox fx:id="Tipo2" prefWidth="150.0">
                     <HBox.margin>
                         <Insets left="30.0" />
                     </HBox.margin></ChoiceBox>
             </children>
         </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <HBox prefHeight="39.0" prefWidth="455.0">
             <children>
-                <Button mnemonicParsing="false" text="Añadir Pokemon">
+                <Button mnemonicParsing="false" onAction="#onAddPoke2" text="Añadir Pokemon">
                     <HBox.margin>
                         <Insets left="20.0" />
                     </HBox.margin></Button>
-                <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Añadir Tipo">
+                <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddTipo" text="Añadir Tipo">
                     <HBox.margin>
                         <Insets left="20.0" />
                     </HBox.margin></Button>
-                <Button layoutX="70.0" layoutY="10.0" mnemonicParsing="false" text="Eliminar Pokemon">
+                <Button layoutX="70.0" layoutY="10.0" mnemonicParsing="false" onAction="#onDelPoke" text="Eliminar Pokemon">
                     <HBox.margin>
                         <Insets left="20.0" />
                     </HBox.margin></Button>
             </children>
         </HBox>
+      <ListView fx:id="lista2" prefHeight="200.0" prefWidth="200.0" />
     </children>
 </VBox>

@@ -50,4 +50,9 @@ public class EntrenadorService {
         entrenadorRepository.save(entrenador);
         return pokemonRepository.save(poke);
     }
+
+    public List<Entrenador> findAll(){
+        return (List<Entrenador>) entrenadorRepository.findAll();
+    }
+
 }
