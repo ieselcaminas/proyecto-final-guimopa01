@@ -15,7 +15,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <TextField id="nomEntrenador" prefHeight="25.0" prefWidth="190.0" promptText="Ash Ketchup">
+            <TextField fx:id="nomEntrenador" prefHeight="25.0" prefWidth="190.0" promptText="Ash Ketchup">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -30,7 +30,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <ChoiceBox id="Poke1" prefWidth="150.0">
+            <ChoiceBox fx:id="poke1" prefWidth="150.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -45,7 +45,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <ChoiceBox id="Poke2" prefWidth="150.0">
+            <ChoiceBox fx:id="poke2" prefWidth="150.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></ChoiceBox>
@@ -57,7 +57,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <ChoiceBox id="Poke3" prefWidth="150.0">
+            <ChoiceBox fx:id="poke3" prefWidth="150.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></ChoiceBox>
@@ -69,7 +69,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <ChoiceBox id="Poke4" prefWidth="150.0">
+            <ChoiceBox fx:id="poke4" prefWidth="150.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></ChoiceBox>
@@ -81,7 +81,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <ChoiceBox id="Poke5" prefWidth="150.0">
+            <ChoiceBox fx:id="poke5" prefWidth="150.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></ChoiceBox>
@@ -93,7 +93,7 @@
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin></Label>
-            <ChoiceBox id="Poke6" prefWidth="150.0">
+            <ChoiceBox fx:id="poke6" prefWidth="150.0">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></ChoiceBox>

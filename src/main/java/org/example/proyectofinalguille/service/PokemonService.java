@@ -41,6 +41,10 @@ public class PokemonService {
         return (List<Pokemon>) pokemonRepository.findAll();
 
     }
+
+    public Pokemon findByNombre(String nomPokemon) {
+        return pokemonRepository.findByNombre(nomPokemon);
+    }
 }
 
 

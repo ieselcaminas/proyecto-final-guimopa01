@@ -1,27 +1,41 @@
 package org.example.proyectofinalguille;
 
-import jakarta.transaction.Transactional;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-
+@SpringBootApplication
 public class PokeApplication extends Application {
+
+    private ConfigurableApplicationContext springContext;
+
     @Override
-    @Transactional
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(PokeApplication.class.getResource("Entrenador.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Aplicacion");
-        stage.setScene(scene);
+    public void init() {
+        springContext = SpringApplication.run(PokeApplication.class);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Entrenador.fxml"));
+        loader.setControllerFactory(springContext::getBean); // ← OBLIGATORIO
+
+        Parent root = loader.load();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Aplicación Pokémon");
         stage.show();
     }
-}
 
+    @Override
+    public void stop() {
+        springContext.close();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

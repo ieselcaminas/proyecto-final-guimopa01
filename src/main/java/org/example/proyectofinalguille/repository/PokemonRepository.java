@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface PokemonRepository extends CrudRepository<Pokemon, Long> {
     List<Pokemon> findByEntrenadorId(Long entrenador_id);
+
+    Pokemon findByNombre(String nomPokemon);
+
 }

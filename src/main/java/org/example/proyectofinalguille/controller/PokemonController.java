@@ -14,15 +14,19 @@ import org.example.proyectofinalguille.entity.Entrenador;
 import org.example.proyectofinalguille.entity.Pokemon;
 import org.example.proyectofinalguille.service.PokemonService;
 import org.example.proyectofinalguille.service.TipoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
 
+@Controller
 public class PokemonController {
-
+    @Autowired
     private PokemonService pokemonService;
+    @Autowired
     private TipoService tipoService;
 
     @FXML
@@ -57,33 +61,22 @@ public class PokemonController {
 
     //Añadir poke + tipo
     @FXML
-    protected void onAddEnt() {
-        if (!nomPoke.getText().isEmpty()) {
-            pokemonService.createPokemon(nomPoke.getText());
-        }
-        if (!Tipo1.getValue().isEmpty()) {
-            tipoService.crearTipo(Tipo1.getValue());
-        }
-        if (!Tipo2.getValue().isEmpty()) {
-            tipoService.crearTipo(Tipo2.getValue());
-        }
-        actualizarLista();
+    public void onAddPoke2(javafx.event.ActionEvent event) {
+        System.out.println("Añadir Pokémon");
+        // Aquí tu lógica para añadir Pokémon
     }
+
 
     //Eliminar Pokemon
     @FXML
-    protected void onDelEnt() {
-        int indice = lista2.getSelectionModel().getSelectedIndex();
-
-        if(indice >= 0){
-            Pokemon p = pokemonService.findAll().get(indice);
-            pokemonService.deletePokemon(p.getId());
-        }
+    public void onDelPoke(javafx.event.ActionEvent event) {
+        System.out.println("Eliminar Pokémon");
+        // Aquí tu lógica para eliminar Pokémon
     }
 
     @FXML
-    private void onAddTipo(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Tipo.fxml"));
+    private void onAddTipo(javafx.event.ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectofinalguille/Tipo.fxml"));
         Parent root = loader.load();
 
         Stage stage = new Stage();
