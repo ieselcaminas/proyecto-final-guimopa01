@@ -8,6 +8,7 @@ import org.example.proyectofinalguille.repository.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -52,7 +53,12 @@ public class EntrenadorService {
     }
 
     public List<Entrenador> findAll(){
-        return (List<Entrenador>) entrenadorRepository.findAll();
+        List<Entrenador> lista = (List<Entrenador>) entrenadorRepository.findAll();
+        lista.forEach(e -> e.getPokemons().size());
+        return lista;
     }
 
+    public Entrenador findById(Long id) {
+        return entrenadorRepository.findById(id).orElseThrow();
+    }
 }

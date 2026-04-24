@@ -1,7 +1,9 @@
 package org.example.proyectofinalguille.service;
 
 import jakarta.transaction.Transactional;
+import org.example.proyectofinalguille.entity.Entrenador;
 import org.example.proyectofinalguille.entity.Pokemon;
+import org.example.proyectofinalguille.entity.Tipo;
 import org.example.proyectofinalguille.repository.EntrenadorRepository;
 import org.example.proyectofinalguille.repository.PokemonRepository;
 import org.example.proyectofinalguille.repository.TipoRepository;
@@ -40,6 +42,14 @@ public class PokemonService {
     public List<Pokemon> findAll(){
         return (List<Pokemon>) pokemonRepository.findAll();
 
+    }
+
+    public Tipo addTipo(Long id, Long idPokemon){
+        Pokemon p = pokemonRepository.findById(idPokemon).orElseThrow();
+        Tipo t = tipoRepository.findById(id).orElseThrow();
+        p.addTipo(t);
+        pokemonRepository.save(p);
+        return tipoRepository.save(t);
     }
 
     public Pokemon findByNombre(String nomPokemon) {

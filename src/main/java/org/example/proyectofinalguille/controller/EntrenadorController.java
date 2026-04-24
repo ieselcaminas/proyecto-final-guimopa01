@@ -14,6 +14,7 @@ import org.example.proyectofinalguille.entity.Entrenador;
 import org.example.proyectofinalguille.entity.Pokemon;
 import org.example.proyectofinalguille.service.EntrenadorService;
 import org.example.proyectofinalguille.service.PokemonService;
+import org.example.proyectofinalguille.service.TipoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -26,7 +27,8 @@ public class EntrenadorController {
 
     @Autowired
     private EntrenadorService entrenadorService;
-
+    @Autowired
+    private TipoService tipoService;
     @Autowired
     private PokemonService pokemonService;
 
@@ -59,6 +61,13 @@ public class EntrenadorController {
         List<Pokemon> pokemons = pokemonService.findAll();
         List<String> noms = pokemons.stream().map(Pokemon::getNombre).toList();
 
+        poke1.getItems().clear();
+        poke2.getItems().clear();
+        poke3.getItems().clear();
+        poke4.getItems().clear();
+        poke5.getItems().clear();
+        poke6.getItems().clear();
+
         poke1.getItems().addAll(noms);
         poke2.getItems().addAll(noms);
         poke3.getItems().addAll(noms);
@@ -73,8 +82,16 @@ public class EntrenadorController {
 
         List<Entrenador> entrenadors = entrenadorService.findAll();
 
-        for(Entrenador ent : entrenadors){
-            lista.getItems().add(ent.getNombre());
+        for (Entrenador ent : entrenadors) {
+            String pokes = ent.getPokemons()
+                    .stream()
+                    .map(Pokemon::getNombre)
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("Sin pokémon");
+
+            String item = ent.getId() + " | " + ent.getNombre() + " | " + pokes;
+
+            lista.getItems().add(item);
         }
     }
     //limpiar campos
@@ -95,8 +112,12 @@ public class EntrenadorController {
         if(index <0){
             return;
         }
-        Entrenador e = entrenadorService.findAll().get(index);
+        String item = lista.getItems().get(index);
+        Long id = Long.parseLong(item.split("\\|")[0].trim());
+        Entrenador e = entrenadorService.findById(id);
+
         nomEntrenador.setText(e.getNombre());
+        cargarPokes();
         poke1.setValue(null);
         poke2.setValue(null);
         poke3.setValue(null);
@@ -106,24 +127,25 @@ public class EntrenadorController {
 
         List<Pokemon> pokes = new ArrayList<>(e.getPokemons());
         for(int i = 0; i < pokes.size(); i++){
+            String nomPokemon = pokes.get(i).getNombre();
             switch (i){
                 case 0:
-                    poke1.setValue(pokes.get(i).getNombre());
+                    poke1.setValue(nomPokemon);
                     break;
                 case 1:
-                    poke2.setValue(pokes.get(i).getNombre());
+                    poke2.setValue(nomPokemon);
                     break;
                 case 2:
-                    poke3.setValue(pokes.get(i).getNombre());
+                    poke3.setValue(nomPokemon);
                     break;
                 case 3:
-                    poke4.setValue(pokes.get(i).getNombre());
+                    poke4.setValue(nomPokemon);
                     break;
                 case 4:
-                    poke5.setValue(pokes.get(i).getNombre());
+                    poke5.setValue(nomPokemon);
                     break;
                 case 5:
-                    poke6.setValue(pokes.get(i).getNombre());
+                    poke6.setValue(nomPokemon);
                     break;
             }
         }
@@ -155,6 +177,7 @@ public class EntrenadorController {
             Pokemon pok = pokemonService.findByNombre(nomPokemon);
             if(pok != null){
                 entrenador.addPokemon(pok);
+                pokemonService.updatePokemon(pok);
             }
         }
     }
@@ -189,6 +212,7 @@ public class EntrenadorController {
         if(indice >= 0){
             Entrenador e = entrenadorService.findAll().get(indice);
             entrenadorService.deleteEntrenador(e.getId());
+            limpiar();
             actualizarLista();
         }
     }
@@ -199,6 +223,9 @@ public class EntrenadorController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyectofinalguille/Pokemon.fxml"));
         Parent root = loader.load();
 
+        PokemonController controller = loader.getController();
+        controller.setServices(tipoService, pokemonService);
+
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Ventana Modal");
@@ -207,6 +234,8 @@ public class EntrenadorController {
         stage.initOwner(((Node)event.getSource()).getScene().getWindow()); // La asocia a la ventana principal
 
         stage.showAndWait(); // Bloquea hasta que se cierre
+
+        cargarPokes();
     }
 
 }

@@ -67,6 +67,6 @@
                     </HBox.margin></Button>
             </children>
         </HBox>
-      <ListView fx:id="lista2" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="lista2" onMouseClicked="#onSelecPokemon" prefHeight="200.0" prefWidth="200.0" />
     </children>
 </VBox>

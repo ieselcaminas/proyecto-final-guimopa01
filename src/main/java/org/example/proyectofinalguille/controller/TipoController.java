@@ -11,34 +11,18 @@ import java.util.List;
 public class TipoController {
 
     private TipoService tipoService;
+    public void setTipoService(TipoService tipoService) {
+        this.tipoService = tipoService;
+
+        actualizarLista();
+    }
 
     @FXML
-    private javafx.scene.control.TextField nomType1;
-    @javafx.fxml.FXML
-    private javafx.scene.control.TextField nomType2;
-    @javafx.fxml.FXML
+    private javafx.scene.control.TextField nomType;
+    @FXML
     private javafx.scene.control.ListView<String> lista3;
 
-    //iniciar
-    public void iniciar(){
-        actualizarLista();
-    }
 
-    @FXML
-    protected void onAddTipo2() {
-        if (!nomType1.getText().isEmpty()) {
-            tipoService.crearTipo(nomType1.getText());
-        }
-        if (!nomType2.getText().isEmpty()) {
-            tipoService.crearTipo(nomType2.getText());
-        }
-        actualizarLista();
-    }
-
-    @FXML
-    protected void onDelTipo() {
-        // Lógica para eliminar tipo seleccionado
-    }
 
     //actualizarlista
     public void actualizarLista(){
@@ -51,19 +35,62 @@ public class TipoController {
         }
     }
 
+    //limpiar campos
+    public void limpiar(){
+        nomType.clear();
+    }
+
+    //poner datos para modificar
+    @FXML
+    public void onSelecTipo(){
+        int index = lista3.getSelectionModel().getSelectedIndex();
+        if(index < 0){
+            return;
+        }
+        Tipo tipo = tipoService.findAll().get(index);
+        nomType.setText(tipo.getNombre());
+    }
+
     //modificar tipo
     public void modTipo(){
-
+        int index = lista3.getSelectionModel().getSelectedIndex();
+        if(index < 0){
+            return;
+        }
+        Tipo tipo = tipoService.findAll().get(index);
+        tipo.setNombre(nomType.getText());
+        tipoService.updateTipo(tipo);
+        limpiar();
+        actualizarLista();
     }
 
-    //Eliminar Tipo
-    @FXML
-    protected void onDelEnt() {
-        int indice = lista3.getSelectionModel().getSelectedIndex();
 
-        if(indice >= 0){
-            Tipo tipo = tipoService.findAll().get(indice);
+    //añadir tipo
+    @FXML
+    protected void onAddTipo2() {
+        String nombre = nomType.getText();
+
+        if(nombre.isEmpty()){
+            return;
+        }
+
+        Tipo tipo = tipoService.crearTipo(nombre);
+        tipoService.updateTipo(tipo);
+        limpiar();
+        actualizarLista();
+    }
+
+    //eliminar tipo
+    @FXML
+    protected void onDelTipo() {
+        int index = lista3.getSelectionModel().getSelectedIndex();
+        if(index >= 0){
+            Tipo tipo = tipoService.findAll().get(index);
             tipoService.deleteTipo(tipo.getId());
+            limpiar();
+            actualizarLista();
         }
     }
+
+
 }

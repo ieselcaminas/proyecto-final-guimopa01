@@ -115,6 +115,6 @@
                </HBox.margin></Button>
          </children>
       </HBox>
-      <ListView fx:id="lista" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="lista" onMouseClicked="#onSelecEntrenador" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </VBox>

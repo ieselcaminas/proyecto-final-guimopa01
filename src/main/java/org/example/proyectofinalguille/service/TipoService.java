@@ -32,4 +32,8 @@ public class TipoService {
     public List<Tipo> findAll() {
         return (List<Tipo>) tipoRepository.findAll();
     }
+
+    public Tipo findByNombre(String tipo) {
+        return tipoRepository.findByNombre(tipo);
+    }
 }
