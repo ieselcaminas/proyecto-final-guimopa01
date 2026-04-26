@@ -47,7 +47,7 @@ public class EntrenadorController {
     @FXML
     private ChoiceBox<String> poke6;
     @FXML
-    private ListView<String> lista;
+    private ListView<Entrenador> lista;
 
 
     //iniciar 3
@@ -79,20 +79,7 @@ public class EntrenadorController {
     //actualizarlista
     public void actualizarLista(){
         lista.getItems().clear();
-
-        List<Entrenador> entrenadors = entrenadorService.findAll();
-
-        for (Entrenador ent : entrenadors) {
-            String pokes = ent.getPokemons()
-                    .stream()
-                    .map(Pokemon::getNombre)
-                    .reduce((a, b) -> a + ", " + b)
-                    .orElse("Sin pokémon");
-
-            String item = ent.getId() + " | " + ent.getNombre() + " | " + pokes;
-
-            lista.getItems().add(item);
-        }
+        lista.getItems().addAll(entrenadorService.findAll());
     }
     //limpiar campos
     public void limpiar(){
@@ -105,17 +92,16 @@ public class EntrenadorController {
         poke6.setValue(null);
     }
 
+    private Entrenador entrenadorSeleccionado = null;
+
     //Poner datos para modificar
     @FXML
     public void onSelecEntrenador(){
-        int index = lista.getSelectionModel().getSelectedIndex();
-        if(index <0){
+        Entrenador e = lista.getSelectionModel().getSelectedItem();
+        if (e == null) {
             return;
         }
-        String item = lista.getItems().get(index);
-        Long id = Long.parseLong(item.split("\\|")[0].trim());
-        Entrenador e = entrenadorService.findById(id);
-
+        entrenadorSeleccionado = e;
         nomEntrenador.setText(e.getNombre());
         cargarPokes();
         poke1.setValue(null);
@@ -182,16 +168,30 @@ public class EntrenadorController {
         }
     }
 
+    private String mayusculas(String texto) {
+        if (texto == null || texto.isEmpty()) return texto;
+        texto = texto.trim().toLowerCase();
+        return texto.substring(0, 1).toUpperCase() + texto.substring(1);
+    }
+
+
     //Añadir entrenador + poke
     @FXML
     protected void onAddEnt() {
-        String nombre = nomEntrenador.getText();
+        String nombre = mayusculas(nomEntrenador.getText());
 
         if(nombre.isEmpty()){
             return;
         }
+        Entrenador entrenador;
+        if(entrenadorSeleccionado != null){
+            entrenador = entrenadorSeleccionado;
+            entrenador.setNombre(nombre);
+            entrenador.getPokemons().clear();
+        } else{
+            entrenador = entrenadorService.createEntrenador(nombre);
+        }
 
-        Entrenador entrenador = entrenadorService.createEntrenador(nombre);
         asignarPokemon(entrenador, poke1.getValue());
         asignarPokemon(entrenador, poke2.getValue());
         asignarPokemon(entrenador, poke3.getValue());
@@ -200,6 +200,7 @@ public class EntrenadorController {
         asignarPokemon(entrenador, poke6.getValue());
 
         entrenadorService.updateEntrenador(entrenador);
+        entrenadorSeleccionado = null;
         limpiar();
         actualizarLista();
     }

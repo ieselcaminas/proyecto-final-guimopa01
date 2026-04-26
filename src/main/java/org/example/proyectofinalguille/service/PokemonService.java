@@ -16,9 +16,9 @@ import java.util.List;
 @Service
 public class PokemonService {
 
-    private PokemonRepository pokemonRepository;
-    private EntrenadorRepository entrenadorRepository;
-    private TipoRepository tipoRepository;
+    private final PokemonRepository pokemonRepository;
+    private final EntrenadorRepository entrenadorRepository;
+    private final TipoRepository tipoRepository;
 
     @Autowired
     public PokemonService(PokemonRepository pokemonRepository, EntrenadorRepository entrenadorRepository, TipoRepository tipoRepository) {
@@ -28,8 +28,16 @@ public class PokemonService {
     }
 
     public Pokemon createPokemon(String nombre){
-        return pokemonRepository.save(new Pokemon(nombre));
+        Pokemon p = pokemonRepository.findByNombreIgnoreCase(nombre);
+        if (p != null) {
+            return p;
+        }
+        p = pokemonRepository.save(new Pokemon(nombre));
+        p.getTipo().size();
+        p.getEntrenadors().size();
+        return p;
     }
+
 
     public void deletePokemon(Long id){
         pokemonRepository.deleteById(id);
@@ -39,21 +47,33 @@ public class PokemonService {
         return pokemonRepository.save(pokemon);
     }
 
-    public List<Pokemon> findAll(){
-        return (List<Pokemon>) pokemonRepository.findAll();
-
+    public Pokemon findById(Long id){
+        Pokemon p = pokemonRepository.findById(id).orElseThrow();
+        p.getTipo().size();
+        p.getEntrenadors().size();
+        return p;
     }
+
+    public List<Pokemon> findAll(){
+        return pokemonRepository.findAllWithTipos();
+    }
+
 
     public Tipo addTipo(Long id, Long idPokemon){
         Pokemon p = pokemonRepository.findById(idPokemon).orElseThrow();
         Tipo t = tipoRepository.findById(id).orElseThrow();
         p.addTipo(t);
         pokemonRepository.save(p);
-        return tipoRepository.save(t);
+        return t;
     }
 
     public Pokemon findByNombre(String nomPokemon) {
-        return pokemonRepository.findByNombre(nomPokemon);
+        Pokemon p = pokemonRepository.findByNombre(nomPokemon);
+        if (p != null) {
+            p.getEntrenadors().size();
+            p.getTipo().size();
+        }
+        return p;
     }
 }
 

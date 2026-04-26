@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface EntrenadorRepository extends CrudRepository<Entrenador, Long> {
     Entrenador findByNombre(String nom);
+
+    List<Entrenador> findAll();
 }

@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class EntrenadorService {
 
-    private EntrenadorRepository entrenadorRepository;
-    private PokemonRepository pokemonRepository;
+    private final EntrenadorRepository entrenadorRepository;
+    private final PokemonRepository pokemonRepository;
 
     @Autowired
     public EntrenadorService(EntrenadorRepository entrenadorRepository, PokemonRepository pokemonRepository) {
@@ -29,32 +29,42 @@ public class EntrenadorService {
     }
 
     public Entrenador updateEntrenador(Entrenador entrenador){
-        return entrenadorRepository.save(entrenador);
+        entrenadorRepository.save(entrenador);
+        return entrenador;
     }
 
     public void deleteEntrenador(Long id){
         entrenadorRepository.deleteById(id);
     }
 
-    public List<Pokemon> getPokemons(Long entrenador_id){
-        return pokemonRepository.findByEntrenadorId(entrenador_id);
+    public List<Pokemon> getPokemons(Long entrenadorId){
+        Entrenador e = entrenadorRepository.findById(entrenadorId).orElseThrow();
+        e.getPokemons().size();
+        return new ArrayList<>(e.getPokemons());
     }
-
     public Entrenador getEntrenador(Long id){
         return entrenadorRepository.findById(id).orElseThrow();
     }
 
-    public Pokemon addPokemon(Long entrenador_id, Long pokemonId){
-        Entrenador entrenador = entrenadorRepository.findById(entrenador_id).orElseThrow();
+    public Pokemon addPokemon(Long entrenadorId, Long pokemonId){
+        Entrenador entrenador = entrenadorRepository.findById(entrenadorId).orElseThrow();
         Pokemon poke = pokemonRepository.findById(pokemonId).orElseThrow();
-        entrenador.addPokemon(poke);
+        entrenador.addPokemon(poke); // sincroniza ambos lados
         entrenadorRepository.save(entrenador);
-        return pokemonRepository.save(poke);
+        return poke;
     }
 
-    public List<Entrenador> findAll(){
-        List<Entrenador> lista = (List<Entrenador>) entrenadorRepository.findAll();
-        lista.forEach(e -> e.getPokemons().size());
+    public List<Entrenador> findAll() {
+        List<Entrenador> lista = entrenadorRepository.findAll();
+
+        lista.forEach(e -> {
+            e.getPokemons().size();
+
+            e.getPokemons().forEach(p -> {
+                p.getTipo().size();
+            });
+        });
+
         return lista;
     }
 

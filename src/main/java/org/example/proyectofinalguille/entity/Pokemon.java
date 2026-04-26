@@ -2,8 +2,11 @@ package org.example.proyectofinalguille.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "pokemon")
@@ -13,14 +16,24 @@ public class Pokemon {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "entrenador_id")
-    private Entrenador entrenador;
-
-    @ManyToMany(mappedBy = "pokemons")
-    private Set<Tipo> tipo = new LinkedHashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tipos_pokemons",
+            joinColumns = @JoinColumn(name = "pokemons_id"),
+            inverseJoinColumns = @JoinColumn(name = "tipos_id"))
+    private List<Tipo> tipo = new ArrayList<>();
 
     private String nombre;
+
+    @ManyToMany(mappedBy = "pokemons")
+    private List<Entrenador> entrenadors = new ArrayList<>();
+
+    public List<Entrenador> getEntrenadors() {
+        return entrenadors;
+    }
+
+    public void setEntrenadors(List<Entrenador> entrenadors) {
+        this.entrenadors = entrenadors;
+    }
 
     public Pokemon() {
     }
@@ -28,30 +41,30 @@ public class Pokemon {
         this.nombre = nombre;
     }
 
-    public void addTipo(Tipo tipo) {
-        this.tipo.add(tipo);
-        tipo.getPokemons().add(this);
-    }
-
-    public void removeTipo(Tipo tipo) {
-        this.tipo.remove(tipo);
-        tipo.getPokemons().remove(this);
-    }
-
-    public Set<Tipo> getTipo() {
+    public List<Tipo> getTipo() {
         return tipo;
     }
 
-    public void setTipo(Set<Tipo> tipo) {
+    public void setTipo(List<Tipo> tipo) {
         this.tipo = tipo;
     }
 
-    public Entrenador getEntrenador() {
-        return entrenador;
+    public void addEntrenador(Entrenador entrenador) {
+        this.entrenadors.add(entrenador);
+        entrenador.getPokemons().add(this);
     }
 
-    public void setEntrenador(Entrenador entrenador) {
-        this.entrenador = entrenador;
+    public void removeEntrenador(Entrenador entrenador) {
+        this.entrenadors.remove(entrenador);
+        entrenador.getPokemons().remove(this);
+    }
+
+    public void addTipo(Tipo t) {
+        this.tipo.add(t);
+    }
+
+    public void removeTipo(Tipo t) {
+        this.tipo.remove(t);
     }
 
     public String getNombre() {
@@ -68,6 +81,23 @@ public class Pokemon {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        String listaTipos = tipo.stream()
+                .map(Tipo::getNombre)
+                .collect(Collectors.joining(", "));
+
+        return id + " | " + nombre + " (" + listaTipos + ")";
+    }
+
+    public String toString2() {
+        String listaTipos = tipo.stream()
+                .map(Tipo::getNombre)
+                .collect(Collectors.joining(", "));
+
+        return nombre + " (" + listaTipos + ")";
     }
 
 }

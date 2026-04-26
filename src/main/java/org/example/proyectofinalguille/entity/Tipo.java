@@ -13,10 +13,7 @@ public class Tipo {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(name = "tipos_pokemons",
-            joinColumns = @JoinColumn(name = "tipos_id"),
-            inverseJoinColumns = @JoinColumn(name = "pokemons_id"))
+    @ManyToMany(mappedBy = "tipo")
     private Set<Pokemon> pokemons = new LinkedHashSet<>();
 
     public Tipo(String nombre) {
@@ -28,12 +25,10 @@ public class Tipo {
 
     public void addPokemon(Pokemon pokemon) {
         this.pokemons.add(pokemon);
-        pokemon.getTipo().add(this);
     }
 
     public void removePokemon(Pokemon pokemon) {
         this.pokemons.remove(pokemon);
-        pokemon.getTipo().remove(this);
     }
 
     private String nombre;
@@ -62,4 +57,8 @@ public class Tipo {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return id + " | " + nombre ;
+    }
 }
