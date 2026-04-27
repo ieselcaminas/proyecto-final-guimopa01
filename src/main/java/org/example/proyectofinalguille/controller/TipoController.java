@@ -47,18 +47,6 @@ public class TipoController {
         nomType.setText(t.getNombre());
     }
 
-    //modificar tipo
-    public void modTipo(){
-        int index = lista3.getSelectionModel().getSelectedIndex();
-        if(index < 0){
-            return;
-        }
-        Tipo tipo = tipoService.findAll().get(index);
-        tipo.setNombre(nomType.getText());
-        tipoService.updateTipo(tipo);
-        limpiar();
-        actualizarLista();
-    }
 
     private String mayusculas(String texto) {
         if (texto == null || texto.isEmpty()) return texto;

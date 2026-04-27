@@ -75,66 +75,26 @@ public class PokemonController {
         Tipo2.setValue(null);
     }
 
+    private Pokemon pokemonSeleccionado = null;
+
     //poner datos para modificar
     @FXML
     public void onSelecPokemon() {
         Pokemon p = lista2.getSelectionModel().getSelectedItem();
-        if (p == null) {
-            return;
-        }
-
+        if (p == null) return;
+        pokemonSeleccionado = p;
         nomPoke.setText(p.getNombre());
         Tipo1.setValue(null);
         Tipo2.setValue(null);
-
         List<Tipo> tipos = new ArrayList<>(p.getTipo());
-        if(tipos.size()>=1){
-            Tipo1.setValue(tipos.get(0).getNombre());
-        }
-        if(tipos.size()>=2){
-            Tipo2.setValue(tipos.get(1).getNombre());
-        }
+
+        if (tipos.size() >= 1) Tipo1.setValue(tipos.get(0).getNombre());
+        else Tipo1.setValue(null);
+
+        if (tipos.size() >= 2) Tipo2.setValue(tipos.get(1).getNombre());
+        else Tipo2.setValue(null);
     }
 
-    //modificar poke + tipo
-
-    public void modPoke() {
-        Pokemon seleccionado = lista2.getSelectionModel().getSelectedItem();
-        if (seleccionado == null) {
-            return;
-        }
-        Pokemon p = pokemonService.findById(seleccionado.getId());
-
-        // Nueva lista de tipos con slots fijos
-        List<Tipo> nuevosTipos = new ArrayList<>();
-
-        // Slot 0 → Tipo1
-        if (Tipo1.getValue() != null) {
-            nuevosTipos.add(tipoService.findByNombre(Tipo1.getValue()));
-        }
-
-        // Slot 1 → Tipo2
-        if (Tipo2.getValue() != null) {
-            nuevosTipos.add(tipoService.findByNombre(Tipo2.getValue()));
-        }
-
-        p.setNombre(nomPoke.getText());
-        p.getTipo().clear();
-        p.getTipo().addAll(nuevosTipos);
-        pokemonService.updatePokemon(seleccionado);
-
-        limpiar();
-        actualizarLista();
-    }
-
-    private void adTipoSiNoNulo(List<Tipo> lista, String nombreTipo) {
-        if (nombreTipo != null) {
-            Tipo t = tipoService.findByNombre(nombreTipo);
-            if (t != null && !lista.contains(t)) {
-                lista.add(t);
-            }
-        }
-    }
 
 
     private void asignarTipo(Pokemon p, String tipo){
@@ -172,11 +132,20 @@ public class PokemonController {
             return;
         }
 
-        Pokemon p = pokemonService.createPokemon(nombre);
-        asignarTipo(p,Tipo1.getValue());
-        asignarTipo(p,Tipo2.getValue());
+        Pokemon p;
+        if (pokemonSeleccionado != null) {
+            p = pokemonSeleccionado;
+            p.setNombre(nombre);
+            p.getTipo().clear();
+        } else {
+            p = pokemonService.createPokemon(nombre);
+        }
+
+        asignarTipo(p, Tipo1.getValue());
+        asignarTipo(p, Tipo2.getValue());
 
         pokemonService.updatePokemon(p);
+        pokemonSeleccionado = null;
         limpiar();
         actualizarLista();
     }

@@ -137,27 +137,6 @@ public class EntrenadorController {
         }
     }
 
-    //modificar entrenador + poke
-    public void modEnt(){
-        int index = lista.getSelectionModel().getSelectedIndex();
-        if(index < 0){
-            return;
-        }
-        Entrenador e = entrenadorService.findAll().get(index);
-        e.setNombre(nomEntrenador.getText());
-        e.getPokemons().clear();
-        asignarPokemon(e,poke1.getValue());
-        asignarPokemon(e,poke2.getValue());
-        asignarPokemon(e,poke3.getValue());
-        asignarPokemon(e,poke4.getValue());
-        asignarPokemon(e,poke5.getValue());
-        asignarPokemon(e,poke6.getValue());
-
-        entrenadorService.updateEntrenador(e);
-        limpiar();
-        actualizarLista();
-    }
-
     private void asignarPokemon(Entrenador entrenador, String nomPokemon){
         if(nomPokemon != null){
             Pokemon pok = pokemonService.findByNombre(nomPokemon);

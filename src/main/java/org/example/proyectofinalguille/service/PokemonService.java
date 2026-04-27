@@ -17,13 +17,12 @@ import java.util.List;
 public class PokemonService {
 
     private final PokemonRepository pokemonRepository;
-    private final EntrenadorRepository entrenadorRepository;
     private final TipoRepository tipoRepository;
 
     @Autowired
-    public PokemonService(PokemonRepository pokemonRepository, EntrenadorRepository entrenadorRepository, TipoRepository tipoRepository) {
+    public PokemonService(PokemonRepository pokemonRepository,
+                          TipoRepository tipoRepository) {
         this.pokemonRepository = pokemonRepository;
-        this.entrenadorRepository = entrenadorRepository;
         this.tipoRepository = tipoRepository;
     }
 
@@ -32,27 +31,25 @@ public class PokemonService {
         if (p != null) {
             return p;
         }
-        p = pokemonRepository.save(new Pokemon(nombre));
-        p.getTipo().size();
-        p.getEntrenadors().size();
-        return p;
+        p = new Pokemon(nombre);
+        return pokemonRepository.save(p);
     }
-
 
     public void deletePokemon(Long id){
         pokemonRepository.deleteById(id);
     }
 
-    @Transactional
-    public void updatePokemon(Pokemon p) {
-        Pokemon managed = pokemonRepository.findById(p.getId())
-                .orElseThrow();
+    public List<Pokemon> findAll(){
+        return pokemonRepository.findAllWithTipos();
+    }
 
-        managed.setNombre(p.getNombre());
-
-        // Sobrescribimos completamente la lista de tipos
-        managed.getTipo().clear();
-        managed.getTipo().addAll(p.getTipo());
+    public Pokemon findByNombre(String nomPokemon) {
+        Pokemon p = pokemonRepository.findByNombre(nomPokemon);
+        if (p != null) {
+            p.getTipo().size();
+            p.getEntrenadors().size();
+        }
+        return p;
     }
 
     public Pokemon findById(Long id){
@@ -62,27 +59,13 @@ public class PokemonService {
         return p;
     }
 
-    public List<Pokemon> findAll(){
-        return pokemonRepository.findAllWithTipos();
-    }
+    
 
-
-    public Tipo addTipo(Long id, Long idPokemon){
-        Pokemon p = pokemonRepository.findById(idPokemon).orElseThrow();
-        Tipo t = tipoRepository.findById(id).orElseThrow();
-        p.addTipo(t);
+    @Transactional
+    public void updatePokemon(Pokemon p) {
         pokemonRepository.save(p);
-        return t;
-    }
-
-    public Pokemon findByNombre(String nomPokemon) {
-        Pokemon p = pokemonRepository.findByNombre(nomPokemon);
-        if (p != null) {
-            p.getEntrenadors().size();
-            p.getTipo().size();
-        }
-        return p;
     }
 }
+
 
 

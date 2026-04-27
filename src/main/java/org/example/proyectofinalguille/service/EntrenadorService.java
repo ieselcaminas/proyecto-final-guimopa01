@@ -49,7 +49,7 @@ public class EntrenadorService {
     public Pokemon addPokemon(Long entrenadorId, Long pokemonId){
         Entrenador entrenador = entrenadorRepository.findById(entrenadorId).orElseThrow();
         Pokemon poke = pokemonRepository.findById(pokemonId).orElseThrow();
-        entrenador.addPokemon(poke); // sincroniza ambos lados
+        entrenador.addPokemon(poke);
         entrenadorRepository.save(entrenador);
         return poke;
     }
