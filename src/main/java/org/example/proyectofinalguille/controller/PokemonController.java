@@ -97,22 +97,45 @@ public class PokemonController {
     }
 
     //modificar poke + tipo
-    public void modPoke(){
-    Pokemon p = lista2.getSelectionModel().getSelectedItem();
-    if (p == null) {
-        return;
+
+    public void modPoke() {
+        Pokemon seleccionado = lista2.getSelectionModel().getSelectedItem();
+        if (seleccionado == null) {
+            return;
+        }
+        Pokemon p = pokemonService.findById(seleccionado.getId());
+
+        // Nueva lista de tipos con slots fijos
+        List<Tipo> nuevosTipos = new ArrayList<>();
+
+        // Slot 0 → Tipo1
+        if (Tipo1.getValue() != null) {
+            nuevosTipos.add(tipoService.findByNombre(Tipo1.getValue()));
+        }
+
+        // Slot 1 → Tipo2
+        if (Tipo2.getValue() != null) {
+            nuevosTipos.add(tipoService.findByNombre(Tipo2.getValue()));
+        }
+
+        p.setNombre(nomPoke.getText());
+        p.getTipo().clear();
+        p.getTipo().addAll(nuevosTipos);
+        pokemonService.updatePokemon(seleccionado);
+
+        limpiar();
+        actualizarLista();
     }
 
-    p.setNombre(nomPoke.getText());
-    p.getTipo().clear();
-    pokemonService.updatePokemon(p);
-    asignarTipo(p,Tipo1.getValue());
-    asignarTipo(p,Tipo2.getValue());
-
-    pokemonService.updatePokemon(p);
-    limpiar();
-    actualizarLista();
+    private void adTipoSiNoNulo(List<Tipo> lista, String nombreTipo) {
+        if (nombreTipo != null) {
+            Tipo t = tipoService.findByNombre(nombreTipo);
+            if (t != null && !lista.contains(t)) {
+                lista.add(t);
+            }
+        }
     }
+
 
     private void asignarTipo(Pokemon p, String tipo){
         if(tipo != null){

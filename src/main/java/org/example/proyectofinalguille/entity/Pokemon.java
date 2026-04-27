@@ -60,7 +60,9 @@ public class Pokemon {
     }
 
     public void addTipo(Tipo t) {
-        this.tipo.add(t);
+        if (!tipo.contains(t) && tipo.size() < 2) {
+            tipo.add(t);
+        }
     }
 
     public void removeTipo(Tipo t) {

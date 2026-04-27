@@ -43,8 +43,16 @@ public class PokemonService {
         pokemonRepository.deleteById(id);
     }
 
-    public Pokemon updatePokemon(Pokemon pokemon){
-        return pokemonRepository.save(pokemon);
+    @Transactional
+    public void updatePokemon(Pokemon p) {
+        Pokemon managed = pokemonRepository.findById(p.getId())
+                .orElseThrow();
+
+        managed.setNombre(p.getNombre());
+
+        // Sobrescribimos completamente la lista de tipos
+        managed.getTipo().clear();
+        managed.getTipo().addAll(p.getTipo());
     }
 
     public Pokemon findById(Long id){

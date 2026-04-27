@@ -37,17 +37,13 @@ public class TipoService {
 
     @Transactional
     public List<Tipo> findAll() {
-        List<Tipo> lista = (List<Tipo>) tipoRepository.findAll();
-        lista.forEach(t -> t.getPokemons().size());
-        return lista;
+        return (List<Tipo>) tipoRepository.findAll();
     }
     public Tipo findByNombre(String tipo) {
         return tipoRepository.findByNombre(tipo);
     }
 
     public Tipo findById(Long id){
-        Tipo t = tipoRepository.findById(id).orElseThrow();
-        t.getPokemons().size();
-        return t;
+        return tipoRepository.findById(id).orElseThrow();
     }
 }
